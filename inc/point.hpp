@@ -40,10 +40,55 @@ namespace ECC
         friend auto operator+(const Point& other, const std::string& numberForY) -> Point; 
         
         auto operator-(const Point& other) const -> Point;
-        
 
+        auto operator*(const Point& other) const -> Point;
+        friend auto operator*(const int32_t& numberForX, const Point& other) -> Point;
+        friend auto operator*(const Point& other, const int32_t& numberForY) -> Point;
+        friend auto operator*(const std::string& numberForX, const Point& other) -> Point;
+        friend auto operator*(const Point& other, const std::string& numberForY) -> Point; 
+
+        auto operator/(const Point& other) const -> Point;
     };
-    
+
+    auto Point::operator/(const Point& other) const -> Point
+    {
+        return Point(this->x / other.x, this->x / other.y);
+    }
+
+    auto operator*(const Point& other, const std::string& numberForY) -> Point
+    {
+        Point temp;
+        temp.y.set_str(numberForY, 10);
+        return Point(other.x, other.y * temp.y);         
+    }
+
+    auto operator*(const std::string& numberForX, const Point& other) -> Point
+    {
+        Point temp;
+        temp.x.set_str(numberForX, 10);
+        return Point(other.x * temp.x, other.y); 
+    }
+
+    auto operator*(const Point& other, const int32_t& numberForY) -> Point
+    {
+        return Point(other.x, other.y * numberForY);
+    }
+
+    auto operator*(const int32_t& numberForX, const Point& other) -> Point
+    {
+        return Point(other.x * numberForX, other.y);
+    }
+
+    auto Point::operator*(const Point& other) const -> Point
+    {
+        return Point(this->x * other.x, this->y * other.y);
+    }
+
+    auto Point::operator-(const Point& other) const -> Point
+    {
+        return Point(this->x - other.x, this->y - other.y);
+    }
+
     auto operator+(const Point& other, const std::string& numberForY) -> Point
     {
         Point temp;
