@@ -31,7 +31,8 @@ namespace ECC
         auto setValue(const std::string& x, const std::string& y) -> void;
         auto getValueX(void) -> mpz_class;
         auto getValueY(void) -> mpz_class;
-        
+        auto addValueX(std::string x) -> mpz_class;
+
         /* Operator */
         auto operator+(const Point& other) const -> Point;
         friend auto operator+(const Point& other, const int32_t& numberForY) -> Point; 
@@ -49,6 +50,12 @@ namespace ECC
 
         auto operator/(const Point& other) const -> Point;
     };
+    auto Point::addValueX(std::string x) -> mpz_class
+    {
+        Point temp;
+        temp.x.set_str(x, 10);
+        return (this->x + temp.x);
+    }
 
     auto Point::operator/(const Point& other) const -> Point
     {

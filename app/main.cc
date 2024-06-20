@@ -35,12 +35,18 @@ int main()
     P.setValue("123", "-123");
     Q.setValue("321", "-321");
 
+    std::cout << "P point: \n";
+    std::cout << "X value is: " << P.getValueX() << std::endl;
+    std::cout << "Y value is: " << P.getValueY() << std::endl;
+
+    P.addValueX("1");
+    
     // Addition operator
     // Result = P + Q;
     
-    // std::cout << "P point: \n";
-    // std::cout << "X value is: " << P.getValueX() << std::endl;
-    // std::cout << "Y value is: " << P.getValueY() << std::endl;
+    std::cout << "P point: \n";
+    std::cout << "X value is: " << P.addValueX("1") << std::endl;
+    std::cout << "Y value is: " << P.getValueY() << std::endl;
 
     // std::cout << "Q point: \n";
     // std::cout << "X value is: " << Q.getValueX() << std::endl;
@@ -61,24 +67,24 @@ int main()
     // std::cout << "Y value is: " << Result.getValueY() << std::endl;
 
     // Subtract operator 
-    Result = P - Q;
+    //Result = P - Q;
     
-    std::cout << "P point: \n";
-    std::cout << "X value is: " << P.getValueX() << std::endl;
-    std::cout << "Y value is: " << P.getValueY() << std::endl;
+    // std::cout << "P point: \n";
+    // std::cout << "X value is: " << P.getValueX() << std::endl;
+    // std::cout << "Y value is: " << P.getValueY() << std::endl;
 
-    std::cout << "Q point: \n";
-    std::cout << "X value is: " << Q.getValueX() << std::endl;
-    std::cout << "Y value is: " << Q.getValueY() << std::endl;
+    // std::cout << "Q point: \n";
+    // std::cout << "X value is: " << Q.getValueX() << std::endl;
+    // std::cout << "Y value is: " << Q.getValueY() << std::endl;
 
-    std::cout << "Result point: \n";
-    std::cout << "X value is: " << Result.getValueX() << std::endl;
-    std::cout << "Y value is: " << Result.getValueY() << std::endl;
+    // std::cout << "Result point: \n";
+    // std::cout << "X value is: " << Result.getValueX() << std::endl;
+    // std::cout << "Y value is: " << Result.getValueY() << std::endl;
 
-    Result = 3*Q
-    std::cout << "Result point: \n";
-    std::cout << "X value is: " << Result.getValueX() << std::endl;
-    std::cout << "Y value is: " << Result.getValueY() << std::endl;
+    // Result = 3*Q
+    // std::cout << "Result point: \n";
+    // std::cout << "X value is: " << Result.getValueX() << std::endl;
+    // std::cout << "Y value is: " << Result.getValueY() << std::endl;
 
     // Result = 12345U - P;
     // std::cout << "Result point: \n";
