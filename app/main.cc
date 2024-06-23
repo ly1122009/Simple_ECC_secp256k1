@@ -11,6 +11,7 @@
 #include "main.hpp"
 #include "func.hpp"
 #include "point.hpp"
+#include "ellipticCurve.hpp"
 #include <gmpxx.h>
 
 int main()
@@ -28,23 +29,24 @@ int main()
     // result = a % b;
     // std::cout << "Kết quả của phép mod là: " << result << std::endl;
 
-    ECC::Point P;
-    ECC::Point Q;
-    ECC::Point Result;
+    // ECC::Point P;
+    // ECC::Point Q;
+    // ECC::Point Result;
 
-    P.setValue("123", "-123");
-    Q.setValue("321", "-321");
-    Result = divValueX("12345", P);
+    // P.setValue("123", "-123");
+    // Q.setValue("321", "-321");
+    // Result = divValueX("12345", P);
     //Result = divValueX(P, Result);
+    ECC::EllipticCurve P;
 
-    std::cout << "P point: \n";
-    std::cout << "X value is: " << P.getValueX() << std::endl;
-    std::cout << "Y value is: " << P.getValueY() << std::endl;
+    // std::cout << "P point: \n";
+    // std::cout << "X value is: " << P.getValueX() << std::endl;
+    // std::cout << "Y value is: " << P.getValueY() << std::endl;
 
-    std::cout << "after\n";
-    std::cout << "Result point: \n";
-    std::cout << "X value is: " << Result.getValueX() << std::endl;
-    std::cout << "Y value is: " << Result.getValueY() << std::endl;
+    // std::cout << "after\n";
+    // std::cout << "Result point: \n";
+    // std::cout << "X value is: " << Result.getValueX() << std::endl;
+    // std::cout << "Y value is: " << Result.getValueY() << std::endl;
     
     // P.addValueX("12345");
     
