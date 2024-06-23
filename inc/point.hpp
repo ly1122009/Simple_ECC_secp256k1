@@ -31,98 +31,122 @@ namespace ECC
         auto setValue(const std::string& x, const std::string& y) -> void;
         auto getValueX(void) -> mpz_class;
         auto getValueY(void) -> mpz_class;
-        auto addValueX(std::string x) -> mpz_class;
-
-        /* Operator */
-        auto operator+(const Point& other) const -> Point;
-        friend auto operator+(const Point& other, const int32_t& numberForY) -> Point; 
-        friend auto operator+(const int32_t& numberForX, const Point& other) -> Point;
-        friend auto operator+(const std::string& numberForX, const Point& other) -> Point;
-        friend auto operator+(const Point& other, const std::string& numberForY) -> Point; 
         
-        auto operator-(const Point& other) const -> Point;
+        friend auto addValueX(const std::string& x, Point& other) -> Point;
+        friend auto addValueX(const Point& source, Point& other) -> Point;
+        friend auto addValueY(const std::string& y, Point& other) -> Point;
+        friend auto addValueY(const Point& source, Point& other) -> Point;
 
-        auto operator*(const Point& other) const -> Point;
-        friend auto operator*(const int32_t& numberForX, const Point& other) -> Point;
-        friend auto operator*(const Point& other, const int32_t& numberForY) -> Point;
-        friend auto operator*(const std::string& numberForX, const Point& other) -> Point;
-        friend auto operator*(const Point& other, const std::string& numberForY) -> Point; 
+        friend auto subtractValueX(const std::string& x, Point& other) -> Point;
+        friend auto subtractValueX(const Point& source, Point& other) -> Point;
+        friend auto subtractValueY(const std::string& y, Point& other) -> Point;
+        friend auto subtractValueY(const Point& source, Point& other) -> Point;
 
-        auto operator/(const Point& other) const -> Point;
+        friend auto mulValueX(const std::string& x, Point& other) -> Point;
+        friend auto mulValueX(const Point& source, Point& other) -> Point;
+        friend auto mulValueY(const std::string& y, Point& other) -> Point;
+        friend auto mulValueY(const Point& source, Point& other) -> Point;
+
+        friend auto divValueX(const std::string& x, Point& other) -> Point;
+        friend auto divValueX(const Point& source, Point& other) -> Point;
+        friend auto divValueY(const std::string& y, Point& other) -> Point;
+        friend auto divValueY(const Point& source, Point& other) -> Point;        
     };
-    auto Point::addValueX(std::string x) -> mpz_class
+
+    auto divValueY(const Point& source, Point& other) -> Point
+    {
+        return Point(other.x, other.y / source.y);
+    }
+
+    auto divValueY(const std::string& y, Point& other) -> Point
+    {
+        Point temp;
+        temp.y.set_str(y, 10);
+        return Point(other.x, other.y / temp.y);
+    }
+
+    auto divValueX(const Point& source, Point& other) -> Point
+    {
+        return Point(other.x / source.x, other.y);
+    }
+
+    auto divValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
         temp.x.set_str(x, 10);
-        return (this->x + temp.x);
+        return Point(other.x / temp.x, other.y);
     }
 
-    auto Point::operator/(const Point& other) const -> Point
+    auto mulValueY(const Point& source, Point& other) -> Point
     {
-        return Point(this->x / other.x, this->x / other.y);
+        return Point(other.x, other.y * source.y);
     }
 
-    auto operator*(const Point& other, const std::string& numberForY) -> Point
-    {
-        Point temp;
-        temp.y.set_str(numberForY, 10);
-        return Point(other.x, other.y * temp.y);         
-    }
-
-    auto operator*(const std::string& numberForX, const Point& other) -> Point
+    auto mulValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(numberForX, 10);
-        return Point(other.x * temp.x, other.y); 
+        temp.y.set_str(y, 10);
+        return Point(other.x, other.y * temp.y);        
     }
 
-    auto operator*(const Point& other, const int32_t& numberForY) -> Point
+    auto mulValueX(const Point& source, Point& other) -> Point
     {
-        return Point(other.x, other.y * numberForY);
+        return Point(other.x * source.x, other.y);
     }
 
-    auto operator*(const int32_t& numberForX, const Point& other) -> Point
-    {
-        return Point(other.x * numberForX, other.y);
-    }
-
-    auto Point::operator*(const Point& other) const -> Point
-    {
-        return Point(this->x * other.x, this->y * other.y);
-    }
-
-    auto Point::operator-(const Point& other) const -> Point
-    {
-        return Point(this->x - other.x, this->y - other.y);
-    }
-
-    auto operator+(const Point& other, const std::string& numberForY) -> Point
+    auto mulValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(numberForY, 10);
-        return Point(other.x , other.y + temp.y);  
+        temp.x.set_str(x, 10);
+        return Point(other.x * temp.x, other.y);
     }
 
-    auto operator+(const std::string& numberForX, const Point& other) -> Point
+    auto subtractValueY(const Point& source, Point& other) -> Point
+    {
+        return Point(other.x, other.y - source.y);
+    }
+
+    auto subtractValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(numberForX, 10);
-        return Point(temp.x + other.x , other.y);
+        temp.y.set_str(y, 10);
+        return Point(other.x, other.y - temp.y);
     }
 
-    auto Point::operator+(const Point& other) const -> Point
+    auto subtractValueX(const Point& source, Point& other) -> Point
     {
-        return Point(this->x + other.x, this->y + other.y);
+        return Point(other.x - source.x, other.y);
     }
 
-    auto operator+(const Point& other, const int32_t& numberForY) -> Point
+    auto subtractValueX(const std::string& x, Point& other) -> Point
     {
-        return Point(other.x, other.y + numberForY);
+        Point temp;
+        temp.x.set_str(x, 10);
+        return Point(other.x - temp.x, other.y);
     }
 
-    auto operator+(const int32_t& numberForX, const Point& other) -> Point
+    auto addValueY(const Point& source, Point& other) -> Point
     {
-        return Point(other.x + numberForX, other.y);
+        return Point(other.x, other.y + source.y);
+    }
+
+    auto addValueY(const std::string& y, Point& other) -> Point
+    {
+        Point temp;
+        temp.y.set_str(y, 10);
+        return Point(other.x, other.y + temp.y);        
+    }
+
+    auto addValueX(const Point& source, Point& other) -> Point
+    {
+        return Point(source.x + other.x, other.y);
+    }
+
+    auto addValueX(const std::string& x, Point& other) -> Point
+    {
+        Point temp;
+        temp.x.set_str(x, 10);
+        return Point(temp.x + other.x, other.y);
     }
 
     auto Point::setValue(const std::string& x, const std::string& y) -> void

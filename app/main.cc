@@ -34,19 +34,26 @@ int main()
 
     P.setValue("123", "-123");
     Q.setValue("321", "-321");
+    Result = divValueX("12345", P);
+    //Result = divValueX(P, Result);
 
     std::cout << "P point: \n";
     std::cout << "X value is: " << P.getValueX() << std::endl;
     std::cout << "Y value is: " << P.getValueY() << std::endl;
 
-    P.addValueX("1");
+    std::cout << "after\n";
+    std::cout << "Result point: \n";
+    std::cout << "X value is: " << Result.getValueX() << std::endl;
+    std::cout << "Y value is: " << Result.getValueY() << std::endl;
+    
+    // P.addValueX("12345");
     
     // Addition operator
     // Result = P + Q;
     
-    std::cout << "P point: \n";
-    std::cout << "X value is: " << P.addValueX("1") << std::endl;
-    std::cout << "Y value is: " << P.getValueY() << std::endl;
+    // std::cout << "P point: \n";
+    // std::cout << "X value is: " << P.getValueX() << std::endl;
+    // std::cout << "Y value is: " << P.getValueY() << std::endl;
 
     // std::cout << "Q point: \n";
     // std::cout << "X value is: " << Q.getValueX() << std::endl;
