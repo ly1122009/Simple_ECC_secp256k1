@@ -50,8 +50,37 @@ namespace ECC
         friend auto divValueX(const std::string& x, Point& other) -> Point;
         friend auto divValueX(const Point& source, Point& other) -> Point;
         friend auto divValueY(const std::string& y, Point& other) -> Point;
-        friend auto divValueY(const Point& source, Point& other) -> Point;        
+        friend auto divValueY(const Point& source, Point& other) -> Point;   
+
+        friend auto moduloValueX(const std::string& x, Point& other) -> Point;
+        friend auto moduloValueX(const Point& source, Point& other) -> Point;
+        friend auto moduloValueY(const std::string& y, Point& other) -> Point;
+        friend auto moduloValueY(const Point& source, Point& other) -> Point;      
     };
+    
+    auto moduloValueY(const Point& source, Point& other) -> Point
+    {
+        return Point(other.x, other.y % source.y);
+    }
+
+    auto moduloValueY(const std::string& y, Point& other) -> Point
+    {
+        Point temp;
+        temp.y.set_str(y, 10);
+        return Point(other.x, other.y % temp.y);
+    }
+    
+    auto moduloValueX(const Point& source, Point& other) -> Point
+    {
+        return Point(other.x % source.x, other.y);
+    }
+
+    auto moduloValueX(const std::string& x, Point& other) -> Point
+    {
+        Point temp;
+        temp.x.set_str(x, 10);
+        return Point(other.x % temp.x, other.y);        
+    }
 
     auto divValueY(const Point& source, Point& other) -> Point
     {
