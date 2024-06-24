@@ -22,6 +22,7 @@ namespace ECC
     private:
         /* data */
         Point P;
+        mpz_class M;
 
     public:
         /* Method */
