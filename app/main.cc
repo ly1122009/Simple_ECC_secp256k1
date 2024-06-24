@@ -21,6 +21,9 @@ int main()
     // // Gán giá trị cho các biến dưới dạng số thập phân
     // a.set_str("1234567", 10);
     // b.set_str("-764353", 10);
+    // result = a + b;
+    // std::cout << result << std::endl;
+
 
     // // Thực hiện phép cộng
     // result = a + 12;
@@ -35,13 +38,20 @@ int main()
 
     // P.setValue("123", "-123");
     // Q.setValue("321", "-321");
-    // Result = divValueX("12345", P);
-    //Result = divValueX(P, Result);
-    ECC::EllipticCurve P;
+    // Result = divValueX(P, P);
+    // Result = mulValueX("3", Result);
+    // //Result = divValueX(P, Result);
+    
+    ECC::ellipticCurve temp;
+    ECC::Point Result;
+    // std::cout << temp.M_point();
+    Result = temp.M_point();
+    
+    // ECC::printECC(Result);
 
-    // std::cout << "P point: \n";
-    // std::cout << "X value is: " << P.getValueX() << std::endl;
-    // std::cout << "Y value is: " << P.getValueY() << std::endl;
+    std::cout << "Result point: \n";
+    std::cout << "X value is: " << Result.getValueX() << std::endl;
+    std::cout << "Y value is: " << Result.getValueY() << std::endl;
 
     // std::cout << "after\n";
     // std::cout << "Result point: \n";

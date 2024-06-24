@@ -17,28 +17,59 @@
 
 namespace ECC
 {
-    class EllipticCurve
+    class ellipticCurve : public Point
     {
     private:
         /* data */
-    Point P;
+        Point P;
 
     public:
-        EllipticCurve();
-        ~EllipticCurve();
+        /* Method */
+        friend auto printECC(ellipticCurve Source) -> void; 
+        auto printPoint(void) -> void;
+        auto M_point(void) -> Point;
+
+        /* Constructor & Destructor */
+        ellipticCurve(/* args */);
+        ~ellipticCurve();
     };
     
-    EllipticCurve::EllipticCurve(/* args */) 
+    auto ellipticCurve::M_point(void) -> Point
     {
-        P.setValue("123", "3213");
-        std::cout << P.getValueX();
+        Point X_temp;
+        X_temp = mulValueX(P, P);
+        X_temp = mulValueX("3", X_temp);
+        return X_temp;
+
+        // Point Y_temp;
+        // Y_temp = mulValueY("2", P);
+
+        // mpz_class Result;
+        // Result = X_temp.getValueX() / Y_temp.getValueY();
+        // return Result;
+        //return (3 * (this->P.getValueX() * this->P.getValueX())) / (2 * this->P.getValueY());
+    }
+
+    auto ellipticCurve::printPoint(void) -> void
+    {
+        std::cout << "X value: " << P.getValueX() << std::endl; 
+        std::cout << "Y value: " << P.getValueY() << std::endl;
+    }
+
+    ellipticCurve::ellipticCurve(/* args */)
+    {
+        P.setValue("123", "456");
     }
     
-    EllipticCurve::~EllipticCurve()
+    ellipticCurve::~ellipticCurve()
     {
-        
     }
     
+    auto printECC(ellipticCurve Source) -> void
+    {
+        std::cout << "Value X: " << Source.P.getValueX() << std::endl;
+        std::cout << "Value Y: " << Source.P.getValueY() << std::endl;
+    }
 
 
 } // namespace ECC
