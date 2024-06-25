@@ -38,14 +38,40 @@ int main()
 
     // P.setValue("123", "-123");
     // Q.setValue("321", "-321");
+    // P = Q;
+    // std::cout << "P point: \n";
+    // std::cout << "X value is: " << P.getValueX() << std::endl;
+    // std::cout << "Y value is: " << P.getValueY() << std::endl;
+
     // Result = divValueX(P, P);
     // Result = mulValueX("3", Result);
     // //Result = divValueX(P, Result);
 
+    // Khởi tạo số nguyên lớn từ chuỗi hex
+    // mpz_class hexNumber("115792089237316195423570985008687907853269984665640564039457584007908834671663");
 
+    // // In ra số thập phân tương ứng
+    // std::cout << "Số thập phân tương ứng của 0x1A2B3C4D5E6F là: " << hexNumber << std::endl;
+
+    // mpz_class num("55066263022277343669578718895168534326250603453777594175500187360389116729240");
+    // mpz_class p("55066263022277343669578718895168534326250603453777594175500187360389116729240");
+    // //mpz_class result;
+
+    // if (num == p)
+    // std::cout << "same" << std::endl;
+    // else
+    // std::cout << "diff" << std::endl;
+    // Tính căn bậc hai và làm tròn xuống
+    //result  = sqrt(((num * num * num) + 7) % p);
+    //result = sqrt(num);
+
+    //std::cout << " là: " << result << std::endl;
     ECC::ellipticCurve temp;
-    //temp.calculatorM();
+    temp._addECC();
     temp.printECC();
+    // ECC::ellipticCurve temp;
+    // //temp.calculatorM();
+    // temp.printECC();
     // ECC::Point Result;
     // std::cout << temp.M_point();
     // Result = temp.M_point();

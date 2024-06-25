@@ -28,7 +28,13 @@ namespace ECC
         ~Point() = default;
 
         /* Method */
+        auto setValueX(const std::string& x) -> void;
+        auto setValueX(const mpz_class& x) -> void;
+        auto setValueY(const std::string& y) -> void;
+        auto setValueY(const mpz_class& y) -> void;
         auto setValue(const std::string& x, const std::string& y) -> void;
+        auto setValue(const mpz_class& x, const mpz_class& y) -> void;
+
         auto getValueX(void) -> mpz_class;
         auto getValueY(void) -> mpz_class;
         
@@ -176,6 +182,31 @@ namespace ECC
         Point temp;
         temp.x.set_str(x, 10);
         return Point(temp.x + other.x, other.y);
+    }
+    auto Point::setValueY(const mpz_class& y) -> void
+    {
+        this->y = y;
+    }
+
+    auto Point::setValueY(const std::string& y) -> void
+    {
+        this->y.set_str(y, 10);
+    }
+
+    auto Point::setValueX(const mpz_class& x) -> void
+    {
+        this->x = x;
+    }
+
+    auto Point::setValueX(const std::string& x) -> void
+    {
+        this->x.set_str(x, 10);
+    }
+
+    auto Point::setValue(const mpz_class& x, const mpz_class& y) -> void
+    {
+        this->x = x;
+        this->y = y;
     }
 
     auto Point::setValue(const std::string& x, const std::string& y) -> void
