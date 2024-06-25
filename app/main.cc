@@ -41,17 +41,20 @@ int main()
     // Result = divValueX(P, P);
     // Result = mulValueX("3", Result);
     // //Result = divValueX(P, Result);
-    
-    ECC::ellipticCurve temp;
-    ECC::Point Result;
-    // std::cout << temp.M_point();
-    Result = temp.M_point();
-    
-    // ECC::printECC(Result);
 
-    std::cout << "Result point: \n";
-    std::cout << "X value is: " << Result.getValueX() << std::endl;
-    std::cout << "Y value is: " << Result.getValueY() << std::endl;
+
+    ECC::ellipticCurve temp;
+    //temp.calculatorM();
+    temp.printECC();
+    // ECC::Point Result;
+    // std::cout << temp.M_point();
+    // Result = temp.M_point();
+    
+    // // ECC::printECC(Result);
+
+    // std::cout << "Result point: \n";
+    // std::cout << "X value is: " << Result.getValueX() << std::endl;
+    // std::cout << "Y value is: " << Result.getValueY() << std::endl;
 
     // std::cout << "after\n";
     // std::cout << "Result point: \n";

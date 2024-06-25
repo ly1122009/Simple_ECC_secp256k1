@@ -20,46 +20,56 @@ namespace ECC
     class ellipticCurve : public Point
     {
     private:
-        /* data */
         Point P;
+        /* Base Point */
+        Point G;
         mpz_class M;
-
+        static constexpr uint8_t A = 0;
+        static constexpr uint8_t B = 7;
     public:
         /* Method */
         friend auto printECC(ellipticCurve Source) -> void; 
-        auto printPoint(void) -> void;
-        auto M_point(void) -> Point;
+        auto printP(void) -> void;
+        auto printM(void) -> void;
+        auto printG(void) -> void;
+        auto printECC(void) -> void;
 
+        auto _addECC(void) -> void;
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
         ~ellipticCurve();
     };
-    
-    auto ellipticCurve::M_point(void) -> Point
+    auto ellipticCurve::printECC(void) -> void
     {
-        Point X_temp;
-        X_temp = mulValueX(P, P);
-        X_temp = mulValueX("3", X_temp);
-        return X_temp;
-
-        // Point Y_temp;
-        // Y_temp = mulValueY("2", P);
-
-        // mpz_class Result;
-        // Result = X_temp.getValueX() / Y_temp.getValueY();
-        // return Result;
-        //return (3 * (this->P.getValueX() * this->P.getValueX())) / (2 * this->P.getValueY());
+        printP();
+        printG();
+        printM();
     }
 
-    auto ellipticCurve::printPoint(void) -> void
+    auto ellipticCurve::printG(void) -> void
     {
-        std::cout << "X value: " << P.getValueX() << std::endl; 
-        std::cout << "Y value: " << P.getValueY() << std::endl;
+        std::cout << "X value of G point: " << G.getValueX() << std::endl; 
+        std::cout << "Y value of G point: " << G.getValueY() << std::endl;
+    }
+
+    auto ellipticCurve::printM(void) -> void
+    {
+        std::cout << "M value: " << this->M << std::endl;
+    }
+
+    auto ellipticCurve::printP(void) -> void
+    {
+        std::cout << "X value of P point: " << P.getValueX() << std::endl; 
+        std::cout << "Y value of P point: " << P.getValueY() << std::endl;
     }
 
     ellipticCurve::ellipticCurve(/* args */)
     {
-        P.setValue("123", "456");
+        this->G.setValue("55066263022277343669578718895168534326250603453777594175500187360389116729240",
+                        "32670510020758816978083085130507043184471273380659243275938904335757337482424");
+        this->P.setValue("55066263022277343669578718895168534326250603453777594175500187360389116729240", 
+                         "32670510020758816978083085130507043184471273380659243275938904335757337482424");
+        this->M = ((this->P.getValueX() * this->P.getValueX()) * 3) / (2 * this->P.getValueY());
     }
     
     ellipticCurve::~ellipticCurve()
