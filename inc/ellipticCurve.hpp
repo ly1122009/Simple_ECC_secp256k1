@@ -58,29 +58,27 @@ namespace ECC
         /* The two points overlap */
         if (this->P.getValueX() == this->G.getValueX() && this->P.getValueY() == this->G.getValueY())
         {
-            this->M = ((this->P.getValueX() * this->P.getValueX()) * 3 + A) / (2 * this->P.getValueY());
-            x_temp = ((M * M) - 2*(this->G.getValueX())) & p;
-            y_temp = (M*(this->G.getValueX() - this->P.getValueX()) - G.getValueY()) % p;
+            this->M = ((this->G.getValueX() * this->G.getValueX()) * 3 + A) / (2 * this->G.getValueY());
+            x_temp = ((M * M) - (2*(this->G.getValueX()))) % p;
+            y_temp = (M*(this->G.getValueX() - x_temp) - G.getValueY()) % p;
             R.setValue(x_temp, y_temp);
-            P = R;
         }
         /* The two points are symmetrical about the horizontal axis */
         else if (this->P.getValueY() + this->G.getValueY() == static_cast<mpz_class>("0")
                  && this->P.getValueX() == this->G.getValueX())
         {
             this->R.setValue("0", "0");
-            P = G;
         }
         /* Two different points */
         else
         {
             this->M = (this->P.getValueY() - this->G.getValueY()) 
                     / (this->P.getValueX() - this->G.getValueX());            
-            x_temp = ((M * M) - G.getValueX() - P.getValueX()) % p;
-            y_temp = (M*(G.getValueX() - P.getValueX()) - G.getValueY()) % p;
+            x_temp = ((M * M) - (G.getValueX() + P.getValueX())) % p;
+            y_temp = (M*(G.getValueX() - x_temp) - G.getValueY()) % p;
             R.setValue(x_temp, y_temp);
-            P = R;
         }
+        P = R;
     }
 
     auto ellipticCurve::printECC(void) -> void
@@ -118,8 +116,8 @@ namespace ECC
     {
         this->G.setValue("16",
                         "20");
-        this->P.setValue("41",
-                        "120");        
+        this->P.setValue("16",
+                        "-20");        
         this->R.setValue("0", "0");
         this->p.set_str("127", 10);
     }

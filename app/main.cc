@@ -36,15 +36,21 @@ void doubleAndAddMultiplication(const mpz_class& a, const mpz_class& b, mpz_clas
 
 int main()
 {
-    mpz_class a, b, result;
+    // mpz_class a, b, result;
 
-    std::cout << "Nhập số thứ nhất: ";
-    std::cin >> a;
-    std::cout << "Nhập số thứ hai: ";
-    std::cin >> b;
+    // std::cout << "Nhập số thứ nhất: ";
+    // std::cin >> a;
+    // std::cout << "Nhập số thứ hai: ";
+    // std::cin >> b;
 
-    doubleAndAddMultiplication(a, b, result);
-    std::cout << a << " * " << b << " = " << result << std::endl;
+    // doubleAndAddMultiplication(a, b, result);
+    // std::cout << a << " * " << b << " = " << result << std::endl;
+
+    ECC::ellipticCurve temp;
+    temp._addECC();
+    temp.printECC();
+
+
     // mpz_class a, b, result;
 
     // // Gán giá trị cho các biến dưới dạng số thập phân
@@ -95,9 +101,7 @@ int main()
     //result = sqrt(num);
 
     
-    // ECC::ellipticCurve temp;
-    // temp._addECC();
-    // temp.printECC();
+
     // ECC::ellipticCurve temp;
     // //temp.calculatorM();
     // temp.printECC();
