@@ -46,7 +46,7 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    ECC::ellipticCurve temp;
+    ECC::ellipticCurve temp("FFFF");
     temp._addECC();
     temp.printECC();
 

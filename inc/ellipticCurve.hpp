@@ -26,6 +26,7 @@ namespace ECC
         Point G;
         mpz_class p;
         mpz_class M;
+        mpz_class private_key;
         static constexpr uint8_t A = 0;
         static constexpr uint8_t B = 7;
     public:
@@ -35,6 +36,7 @@ namespace ECC
         auto printP(void) -> void;
         auto printM(void) -> void;
         auto printR(void) -> void;
+        auto printPrivateKey(void) -> void;
         auto printECC(void) -> void;
         
         auto _addECC(void) -> void;
@@ -42,6 +44,7 @@ namespace ECC
 
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
+        ellipticCurve(const std::string private_key);
         ~ellipticCurve() = default;
     };
 
@@ -56,7 +59,8 @@ namespace ECC
         mpz_class y_temp;
 
         /* The two points overlap */
-        if (this->P.getValueX() == this->G.getValueX() && this->P.getValueY() == this->G.getValueY())
+        if (this->P.getValueX() == this->G.getValueX() 
+            && this->P.getValueY() == this->G.getValueY())
         {
             this->M = ((this->G.getValueX() * this->G.getValueX()) * 3 + A) / (2 * this->G.getValueY());
             x_temp = ((M * M) - (2*(this->G.getValueX()))) % p;
@@ -64,11 +68,19 @@ namespace ECC
             R.setValue(x_temp, y_temp);
         }
         /* The two points are symmetrical about the horizontal axis */
-        else if (this->P.getValueY() + this->G.getValueY() == static_cast<mpz_class>("0")
+        else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
                  && this->P.getValueX() == this->G.getValueX())
         {
             this->R.setValue("0", "0");
         }
+
+        /* The P point is a O point */
+        else if (this->P.getValueX() == static_cast<mpz_class>("0") 
+                && this->P.getValueY() == static_cast<mpz_class>("0"))
+        {
+            this->R.setValue(this->getValueX(), this->getValueY());
+        }
+        
         /* Two different points */
         else
         {
@@ -87,6 +99,12 @@ namespace ECC
         printP();
         printM();
         printR();
+        printPrivateKey();
+    }
+
+    auto ellipticCurve::printPrivateKey(void) -> void
+    {
+        std::cout << "Private Key: " << this->private_key << std::endl;
     }
 
     auto ellipticCurve::printG(void) -> void
@@ -112,14 +130,56 @@ namespace ECC
         std::cout << "Y value of R point: " << R.getValueY() << std::endl;
     }
 
+    ellipticCurve::ellipticCurve(const std::string private_key)
+    {
+        mpz_class x_temp;
+        mpz_class y_temp;
+        this->p.set_str("127", 10);
+
+        x_temp.set_str("16", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("20", 10);
+        y_temp = y_temp % p;
+        this->G.setValue(x_temp, y_temp);
+
+        x_temp.set_str("16", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("20", 10);
+        y_temp = y_temp % p;
+        this->P.setValue(x_temp, y_temp); 
+
+        x_temp.set_str("0", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("0", 10); 
+        y_temp = y_temp % p;       
+        this->R.setValue(x_temp, y_temp);
+
+        this->private_key.set_str(private_key, 16);
+    }
+
     ellipticCurve::ellipticCurve(/* args */)
     {
-        this->G.setValue("16",
-                        "20");
-        this->P.setValue("16",
-                        "-20");        
-        this->R.setValue("0", "0");
+        mpz_class x_temp;
+        mpz_class y_temp;
         this->p.set_str("127", 10);
+
+        x_temp.set_str("16", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("20", 10);
+        y_temp = y_temp % p;
+        this->G.setValue(x_temp, y_temp);
+
+        x_temp.set_str("16", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("20", 10);
+        y_temp = y_temp % p;
+        this->P.setValue(x_temp, y_temp); 
+
+        x_temp.set_str("0", 10);
+        x_temp = x_temp % p;
+        y_temp.set_str("0", 10); 
+        y_temp = y_temp % p;       
+        this->R.setValue(x_temp, y_temp);     
     }
     
     auto printECC(ellipticCurve Source) -> void
@@ -136,3 +196,19 @@ namespace ECC
         //                 "32670510020758816978083085130507043184471273380659243275938904335757337482424");        
         // this->R.setValue("0", "0");
         // this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
+        //         mpz_class x_temp;
+        // mpz_class y_temp;
+
+        // x_temp.set_str("16", 10);
+        // y_temp.set_str("20", 10);
+        // this->G.setValue((x_temp % p),(y_temp % p));
+
+        // x_temp.set_str("16", 10);
+        // y_temp.set_str("20", 10);
+        // this->P.setValue((x_temp % p),(y_temp % p)); 
+
+        // x_temp.set_str("0", 10);
+        // y_temp.set_str("0", 10);        
+        // this->R.setValue((x_temp % p),(y_temp % p));
+        
+        // this->p.set_str("127", 10);
