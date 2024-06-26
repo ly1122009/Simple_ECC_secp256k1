@@ -14,8 +14,37 @@
 #include "ellipticCurve.hpp"
 #include <gmpxx.h>
 
+
+void doubleAndAddMultiplication(const mpz_class& a, const mpz_class& b, mpz_class & result) {
+    
+    mpz_class addend = a; // Giá trị bắt đầu là a
+    mpz_class multiplier = b; // Giá trị bắt đầu là b
+
+    while (multiplier > 0) {
+        // Nếu bit thấp nhất của multiplier là 1, thêm addend vào result
+        if (mpz_tstbit(multiplier.get_mpz_t(), 0)) {
+            result += addend;
+        }
+        // Nhân đôi addend
+        addend <<= 1;
+        // Dịch phải multiplier để xử lý bit tiếp theo
+        multiplier >>= 1;
+    }
+
+    
+}
+
 int main()
 {
+    mpz_class a, b, result;
+
+    std::cout << "Nhập số thứ nhất: ";
+    std::cin >> a;
+    std::cout << "Nhập số thứ hai: ";
+    std::cin >> b;
+
+    doubleAndAddMultiplication(a, b, result);
+    std::cout << a << " * " << b << " = " << result << std::endl;
     // mpz_class a, b, result;
 
     // // Gán giá trị cho các biến dưới dạng số thập phân
@@ -65,10 +94,10 @@ int main()
     //result  = sqrt(((num * num * num) + 7) % p);
     //result = sqrt(num);
 
-    //std::cout << " là: " << result << std::endl;
-    ECC::ellipticCurve temp;
-    temp._addECC();
-    temp.printECC();
+    
+    // ECC::ellipticCurve temp;
+    // temp._addECC();
+    // temp.printECC();
     // ECC::ellipticCurve temp;
     // //temp.calculatorM();
     // temp.printECC();

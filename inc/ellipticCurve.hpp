@@ -38,10 +38,17 @@ namespace ECC
         auto printECC(void) -> void;
         
         auto _addECC(void) -> void;
+        auto _mulECC(void) -> void;
+
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
         ~ellipticCurve() = default;
     };
+
+    auto ellipticCurve::_mulECC(void) -> void
+    {
+
+    }
 
     auto ellipticCurve::_addECC(void) -> void
     {
