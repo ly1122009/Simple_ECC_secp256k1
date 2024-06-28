@@ -15,15 +15,15 @@
 #include <gmpxx.h>
 
 
-void doubleAndAddMultiplication(const mpz_class& a, const mpz_class& b, mpz_class & result) {
+void doubleAndAddMultiplication(const mpz_class& G, const mpz_class& private_Key, mpz_class & public_Key) {
     
-    mpz_class addend = a; // Giá trị bắt đầu là a
-    mpz_class multiplier = b; // Giá trị bắt đầu là b
+    mpz_class addend = G; 
+    mpz_class multiplier = private_Key; 
 
     while (multiplier > 0) {
         // Nếu bit thấp nhất của multiplier là 1, thêm addend vào result
         if (mpz_tstbit(multiplier.get_mpz_t(), 0)) {
-            result += addend;
+            public_Key += addend;
         }
         // Nhân đôi addend
         addend <<= 1;
@@ -46,8 +46,10 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    ECC::ellipticCurve temp("FFFF");
-    temp._addECC();
+    ECC::ellipticCurve temp("123");
+    temp.printECC();
+    std::cout << "After\n";
+    temp._mulECC_ver1();
     temp.printECC();
 
 

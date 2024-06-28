@@ -27,6 +27,7 @@ namespace ECC
         mpz_class p;
         mpz_class M;
         mpz_class private_key;
+        mpz_class public_key;
         static constexpr uint8_t A = 0;
         static constexpr uint8_t B = 7;
     public:
@@ -40,17 +41,33 @@ namespace ECC
         auto printECC(void) -> void;
         
         auto _addECC(void) -> void;
-        auto _mulECC(void) -> void;
+        auto _mulECC_ver1(void) -> void;
+        auto _mulECC_ver2(void) -> void;
 
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
         ellipticCurve(const std::string private_key);
         ~ellipticCurve() = default;
     };
-
-    auto ellipticCurve::_mulECC(void) -> void
+    auto ellipticCurve::_mulECC_ver2(void) -> void
     {
+        while (private_key)
+        {
+            if (private_key % 2 == 1)
+            {
+                _addECC();
+            }
+            
+        }
+    }
 
+    auto ellipticCurve::_mulECC_ver1(void) -> void
+    {
+        while (private_key)
+        {
+            _addECC();
+            private_key--;
+        }
     }
 
     auto ellipticCurve::_addECC(void) -> void
@@ -134,17 +151,17 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("127", 10);
+        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = y_temp % p;
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = y_temp % p;
         this->P.setValue(x_temp, y_temp); 
 
@@ -154,7 +171,7 @@ namespace ECC
         y_temp = y_temp % p;       
         this->R.setValue(x_temp, y_temp);
 
-        this->private_key.set_str(private_key, 16);
+        this->private_key.set_str(private_key, 10);
     }
 
     ellipticCurve::ellipticCurve(/* args */)
