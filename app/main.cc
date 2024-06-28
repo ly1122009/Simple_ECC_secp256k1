@@ -46,9 +46,14 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    ECC::ellipticCurve temp("123");
+    ECC::ellipticCurve temp("2");
     temp.printECC();
-    std::cout << "After\n";
+    std::cout << "\nAfter\n"; 
+  
+    // temp._addECC();
+    // temp.printECC();
+
+
     temp._mulECC_ver1();
     temp.printECC();
 

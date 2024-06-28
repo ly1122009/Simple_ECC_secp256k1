@@ -74,7 +74,8 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-
+        P = R;
+        
         /* The two points overlap */
         if (this->P.getValueX() == this->G.getValueX() 
             && this->P.getValueY() == this->G.getValueY())
@@ -107,7 +108,7 @@ namespace ECC
             y_temp = (M*(G.getValueX() - x_temp) - G.getValueY()) % p;
             R.setValue(x_temp, y_temp);
         }
-        P = R;
+        
     }
 
     auto ellipticCurve::printECC(void) -> void
@@ -151,23 +152,23 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
+        this->p.set_str("127", 10);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("16", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("20", 10);
         y_temp = y_temp % p;
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("16", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("20", 10);
         y_temp = y_temp % p;
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("0", 10);
+        x_temp.set_str("16", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("0", 10); 
+        y_temp.set_str("20", 10); 
         y_temp = y_temp % p;       
         this->R.setValue(x_temp, y_temp);
 
@@ -192,9 +193,9 @@ namespace ECC
         y_temp = y_temp % p;
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("0", 10);
+        x_temp.set_str("16", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("0", 10); 
+        y_temp.set_str("20", 10); 
         y_temp = y_temp % p;       
         this->R.setValue(x_temp, y_temp);     
     }
