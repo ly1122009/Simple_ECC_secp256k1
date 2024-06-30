@@ -28,8 +28,8 @@ namespace ECC
         mpz_class M;
         mpz_class private_key;
         mpz_class public_key;
-        static constexpr uint8_t A = 0;
-        static constexpr uint8_t B = 7;
+        static constexpr uint8_t A = 2;
+        static constexpr uint8_t B = 2;
     public:
         /* Method */
         friend auto printECC(ellipticCurve Source) -> void;
@@ -40,7 +40,9 @@ namespace ECC
         auto printPrivateKey(void) -> void;
         auto printECC(void) -> void;
         
-        auto _addECC(void) -> void;
+        auto _addECC_ver1(void) -> void;
+        auto _addECC_ver2(Point& _G, Point& _P) -> Point;
+
         auto _mulECC_ver1(void) -> void;
         auto _mulECC_ver2(void) -> void;
 
@@ -55,9 +57,12 @@ namespace ECC
         {
             if (private_key % 2 == 1)
             {
-                _addECC();
+                R = _addECC_ver2(this->P, this->P);
+                // P = R;
+                // private_key--;        
             }
-            
+            R = _addECC_ver2(R, P);
+            private_key /= 2;
         }
     }
 
@@ -65,22 +70,67 @@ namespace ECC
     {
         while (private_key)
         {
-            _addECC();
+            _addECC_ver1();
+            P = R;
             private_key--;
         }
     }
 
-    auto ellipticCurve::_addECC(void) -> void
+    auto ellipticCurve::_addECC_ver2(Point& _G, Point& _P) -> Point
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        P = R;
+        mpz_class _M;
+        Point _R;
+        // P = R;
+        
+        /* The two points overlap */
+        if (_P.getValueX() == _G.getValueX() 
+            && _P.getValueY() == _G.getValueY())
+        {
+            _M = ((((_G.getValueX() * _G.getValueX()) * 3 + A) % p) / ((2 * _G.getValueY()) % p)) % p ;
+            x_temp = ((_M * _M) - (2*(_G.getValueX()))) % p;
+            y_temp = (_M*(_G.getValueX() - x_temp) - _G.getValueY()) % p;
+            _R.setValue(x_temp, y_temp);
+        }
+        /* The two points are symmetrical about the horizontal axis */
+        else if ((_P.getValueY()) + (_G.getValueY()) == static_cast<mpz_class>("0")
+                 && _P.getValueX() == _G.getValueX())
+        {
+            _R.setValue("0", "0");
+        }
+
+        /* The P point is a O point */
+        else if (_P.getValueX() == static_cast<mpz_class>("0") 
+                && _P.getValueY() == static_cast<mpz_class>("0"))
+        {
+            _R.setValue(_G.getValueX(), _G.getValueY());
+        }
+        
+        /* Two different points */
+        else
+        {
+            _M = (((_P.getValueY() - _G.getValueY()) % p)
+                    / ((_P.getValueX() - _G.getValueX()) % p) % p);            
+            x_temp = ((_M * _M) - (_G.getValueX() + _P.getValueX())) % p;
+            y_temp = (_M*(_G.getValueX() - x_temp) - _G.getValueY()) % p;
+            _R.setValue(x_temp, y_temp);
+        }
+        return _R;
+        
+    }
+
+    auto ellipticCurve::_addECC_ver1(void) -> void
+    {
+        mpz_class x_temp;
+        mpz_class y_temp;
+        // P = R;
         
         /* The two points overlap */
         if (this->P.getValueX() == this->G.getValueX() 
             && this->P.getValueY() == this->G.getValueY())
         {
-            this->M = ((this->G.getValueX() * this->G.getValueX()) * 3 + A) / (2 * this->G.getValueY());
+            this->M = (((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) / ((2 * this->G.getValueY()) % p);
             x_temp = ((M * M) - (2*(this->G.getValueX()))) % p;
             y_temp = (M*(this->G.getValueX() - x_temp) - G.getValueY()) % p;
             R.setValue(x_temp, y_temp);
@@ -102,8 +152,8 @@ namespace ECC
         /* Two different points */
         else
         {
-            this->M = (this->P.getValueY() - this->G.getValueY()) 
-                    / (this->P.getValueX() - this->G.getValueX());            
+            this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
+                    / ((this->P.getValueX() - this->G.getValueX()) % p) % p);            
             x_temp = ((M * M) - (G.getValueX() + P.getValueX())) % p;
             y_temp = (M*(G.getValueX() - x_temp) - G.getValueY()) % p;
             R.setValue(x_temp, y_temp);
@@ -152,23 +202,23 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("127", 10);
+        this->p.set_str("17", 10);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("5", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("1", 10);
         y_temp = y_temp % p;
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("5", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("1", 10);
         y_temp = y_temp % p;
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("0", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10); 
+        y_temp.set_str("0", 10); 
         y_temp = y_temp % p;       
         this->R.setValue(x_temp, y_temp);
 
@@ -179,23 +229,23 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("127", 10);
+        this->p.set_str("17", 10);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("5", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("1", 10);
         y_temp = y_temp % p;
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("5", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10);
+        y_temp.set_str("1", 10);
         y_temp = y_temp % p;
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("16", 10);
+        x_temp.set_str("0", 10);
         x_temp = x_temp % p;
-        y_temp.set_str("20", 10); 
+        y_temp.set_str("0", 10); 
         y_temp = y_temp % p;       
         this->R.setValue(x_temp, y_temp);     
     }
