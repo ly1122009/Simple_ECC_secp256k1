@@ -60,11 +60,11 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    ECC::ellipticCurve temp("17");
+    ECC::ellipticCurve temp("6");
     //temp.printECC();
     // // std::cout << "\nAfter\n"; 
   
-    temp._mulECC_ver1();
+    temp._mulECC_ver2();
     temp.printECC();
 
     // temp._addECC_ver1();
