@@ -158,8 +158,11 @@ namespace ECC
             R.setValue(x_result, y_result);
         }
         /* The two points are symmetrical about the horizontal axis */
-        else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
+        else if (Common::mod(-(this->G.getValueY()), p) == P.getValueY()  
                  && this->P.getValueX() == this->G.getValueX())
+
+        // else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
+        //          && this->P.getValueX() == this->G.getValueX())
         {
             this->R.setValue("0", "0");
         }
@@ -168,7 +171,7 @@ namespace ECC
         else if (this->P.getValueX() == static_cast<mpz_class>("0") 
                 && this->P.getValueY() == static_cast<mpz_class>("0"))
         {
-            this->R.setValue(this->getValueX(), this->getValueY());
+            this->R.setValue(this->G.getValueX(), this->G.getValueY());
         }
         
         /* Two different points */
@@ -176,8 +179,10 @@ namespace ECC
         {
             // Calculator M value
             Common::modInverse((this->P.getValueX() - this->G.getValueX()), this->p, modInverse_Value);
-            this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
-                    * (modInverse_Value)) % this->p;           
+            M = Common::mod(this->P.getValueY() - this->G.getValueY(), p);
+            M = Common::mod(M * modInverse_Value, p);
+            // this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
+            //         * (modInverse_Value)) % this->p;           
             
             // Calculator X value
             x_result = Common::mod(M * M, p);
