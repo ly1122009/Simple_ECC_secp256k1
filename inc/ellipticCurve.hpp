@@ -13,6 +13,7 @@
 #include <iostream>
 #include <cstdint>
 #include <gmpxx.h>
+#include "common.hpp"
 #include "point.hpp"
 
 namespace ECC
@@ -78,8 +79,8 @@ namespace ECC
 
     auto ellipticCurve::_addECC_ver2(Point& _G, Point& _P) -> Point
     {
-        mpz_class x_temp;
-        mpz_class y_temp;
+        mpz_class x_result;
+        mpz_class y_result;
         mpz_class _M;
         Point _R;
         // P = R;
@@ -89,9 +90,9 @@ namespace ECC
             && _P.getValueY() == _G.getValueY())
         {
             _M = ((((_G.getValueX() * _G.getValueX()) * 3 + A) % p) / ((2 * _G.getValueY()) % p)) % p ;
-            x_temp = ((_M * _M) - (2*(_G.getValueX()))) % p;
-            y_temp = (_M*(_G.getValueX() - x_temp) - _G.getValueY()) % p;
-            _R.setValue(x_temp, y_temp);
+            x_result = ((_M * _M) - (2*(_G.getValueX()))) % p;
+            y_result = (_M*(_G.getValueX() - x_result) - _G.getValueY()) % p;
+            _R.setValue(x_result, y_result);
         }
         /* The two points are symmetrical about the horizontal axis */
         else if ((_P.getValueY()) + (_G.getValueY()) == static_cast<mpz_class>("0")
@@ -112,9 +113,9 @@ namespace ECC
         {
             _M = (((_P.getValueY() - _G.getValueY()) % p)
                     / ((_P.getValueX() - _G.getValueX()) % p) % p);            
-            x_temp = ((_M * _M) - (_G.getValueX() + _P.getValueX())) % p;
-            y_temp = (_M*(_G.getValueX() - x_temp) - _G.getValueY()) % p;
-            _R.setValue(x_temp, y_temp);
+            x_result = ((_M * _M) - (_G.getValueX() + _P.getValueX())) % p;
+            y_result = (_M*(_G.getValueX() - x_result) - _G.getValueY()) % p;
+            _R.setValue(x_result, y_result);
         }
         return _R;
         
@@ -122,18 +123,39 @@ namespace ECC
 
     auto ellipticCurve::_addECC_ver1(void) -> void
     {
+        mpz_class x_result;
         mpz_class x_temp;
-        mpz_class y_temp;
+        mpz_class y_result;
+
+        mpz_class modInverse_Value;
+        
         // P = R;
         
         /* The two points overlap */
         if (this->P.getValueX() == this->G.getValueX() 
             && this->P.getValueY() == this->G.getValueY())
         {
-            this->M = (((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) / ((2 * this->G.getValueY()) % p);
-            x_temp = ((M * M) - (2*(this->G.getValueX()))) % p;
-            y_temp = (M*(this->G.getValueX() - x_temp) - G.getValueY()) % p;
-            R.setValue(x_temp, y_temp);
+            // Calculator M value
+            Common::modInverse((2 * this->G.getValueY()), this->p, modInverse_Value);
+            this->M = Common::mod((this->G.getValueX() * this->G.getValueX()), this->p);
+            this->M = Common::mod(M * 3, this->p);
+            this->M = Common::mod(M + A, this->p);
+            this->M = Common::mod(M * modInverse_Value, this->p);
+            // this->M = ((((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) * (modInverse_Value)) % p;
+            
+            // Calculator X value
+            x_result = Common::mod(this->M * this->M, this->p);
+            x_temp = Common::mod(2 * this->G.getValueX(), this->p);
+            x_result = Common::mod(x_result - x_temp, p);
+            // x_result = (((M * M) % p) - ((2*(this->G.getValueX())) % p)) % p;
+            
+            // Calculator Y value
+            y_result = Common::mod(this->G.getValueX() - x_result, p);
+            y_result = Common::mod(y_result * M, p);
+            y_result = Common::mod(y_result - G.getValueY(), p);
+            // y_result = (((M *((this->G.getValueX() - x_result) % p)) % p) - G.getValueY()) % p;
+            
+            R.setValue(x_result, y_result);
         }
         /* The two points are symmetrical about the horizontal axis */
         else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
@@ -152,11 +174,24 @@ namespace ECC
         /* Two different points */
         else
         {
+            // Calculator M value
+            Common::modInverse((this->P.getValueX() - this->G.getValueX()), this->p, modInverse_Value);
             this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
-                    / ((this->P.getValueX() - this->G.getValueX()) % p) % p);            
-            x_temp = ((M * M) - (G.getValueX() + P.getValueX())) % p;
-            y_temp = (M*(G.getValueX() - x_temp) - G.getValueY()) % p;
-            R.setValue(x_temp, y_temp);
+                    * (modInverse_Value)) % this->p;           
+            
+            // Calculator X value
+            x_result = Common::mod(M * M, p);
+            x_result = Common::mod(x_result - G.getValueX(), p);
+            x_result = Common::mod(x_result - P.getValueX(), p);
+            // x_result = (((M * M) % p) - ((G.getValueX() + P.getValueX()) % p)) % p;
+            
+            // Calculator Y value
+            y_result = Common::mod(G.getValueX() - x_result, p);
+            y_result = Common::mod(y_result * M, p);
+            y_result = Common::mod(y_result - G.getValueY(), p);
+            // y_result = (M*(G.getValueX() - x_result) - G.getValueY()) % p;
+            
+            R.setValue(x_result, y_result);
         }
         
     }
@@ -205,21 +240,21 @@ namespace ECC
         this->p.set_str("17", 10);
 
         x_temp.set_str("5", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("1", 10);
-        y_temp = y_temp % p;
+        y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
         x_temp.set_str("5", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("1", 10);
-        y_temp = y_temp % p;
+        y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 
         x_temp.set_str("0", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("0", 10); 
-        y_temp = y_temp % p;       
+        y_temp = Common::mod(y_temp, p);       
         this->R.setValue(x_temp, y_temp);
 
         this->private_key.set_str(private_key, 10);
@@ -232,21 +267,21 @@ namespace ECC
         this->p.set_str("17", 10);
 
         x_temp.set_str("5", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("1", 10);
-        y_temp = y_temp % p;
+        y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
         x_temp.set_str("5", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("1", 10);
-        y_temp = y_temp % p;
+        y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 
         x_temp.set_str("0", 10);
-        x_temp = x_temp % p;
+        x_temp = Common::mod(x_temp, p);
         y_temp.set_str("0", 10); 
-        y_temp = y_temp % p;       
+        y_temp = Common::mod(y_temp, p);       
         this->R.setValue(x_temp, y_temp);     
     }
     

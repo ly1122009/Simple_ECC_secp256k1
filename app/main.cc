@@ -36,11 +36,18 @@ void doubleAndAddMultiplication(const mpz_class& G, const mpz_class& private_Key
 
 int main()
 {
-    mpz_class a("2");
-    mpz_class mod("17");
-    mpz_class result;
-    ECC::Common::modInverse(a, mod, result);
-    std::cout << result << std::endl;
+
+    // mpz_class a = -14;
+    // mpz_class b = 17;
+    // mpz_class result;
+    // result = ECC::Common::mod(a, b);
+    // std::cout << "-14 mod 17 = " << ECC::Common::mod(a, b) << std::endl;
+
+    // mpz_class a("2");
+    // mpz_class mod("17");
+    // mpz_class result;
+    // ECC::Common::modInverse(a, mod, result);
+    // std::cout << result << std::endl;
     
 
     // mpz_class a, b, result;
@@ -53,12 +60,12 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    // ECC::ellipticCurve temp("1");
-    // temp.printECC();
-    // std::cout << "\nAfter\n"; 
+    ECC::ellipticCurve temp("3");
+    //temp.printECC();
+    // // std::cout << "\nAfter\n"; 
   
-    // temp._mulECC_ver2();
-    // temp.printECC();
+    temp._mulECC_ver1();
+    temp.printECC();
 
     // temp._addECC_ver1();
     // temp.printECC();
