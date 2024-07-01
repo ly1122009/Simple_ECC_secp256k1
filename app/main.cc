@@ -15,15 +15,15 @@
 #include <gmpxx.h>
 
 
-void doubleAndAddMultiplication(const mpz_class& G, const mpz_class& private_Key, mpz_class & public_Key) {
-    
-    mpz_class addend = G; 
-    mpz_class multiplier = private_Key; 
+mpz_class doubleAndAddMultiplication(const mpz_class& a, const mpz_class& b) {
+    mpz_class result = 0; // Khởi tạo kết quả
+    mpz_class addend = a; // Giá trị bắt đầu là a
+    mpz_class multiplier = b; // Giá trị bắt đầu là b
 
     while (multiplier > 0) {
         // Nếu bit thấp nhất của multiplier là 1, thêm addend vào result
         if (mpz_tstbit(multiplier.get_mpz_t(), 0)) {
-            public_Key += addend;
+            result += addend;
         }
         // Nhân đôi addend
         addend <<= 1;
@@ -31,11 +31,43 @@ void doubleAndAddMultiplication(const mpz_class& G, const mpz_class& private_Key
         multiplier >>= 1;
     }
 
-    
+    return result;
+}
+
+mpz_class montgomeryLadder(const mpz_class &base, const mpz_class &exponent, const mpz_class &mod) {
+    mpz_class R0 = 1;
+    mpz_class R1 = base;
+
+    for (ssize_t i = mpz_sizeinbase(exponent.get_mpz_t(), 2) - 1; i >= 0; --i) {
+        if (mpz_tstbit(exponent.get_mpz_t(), i)) {
+            R0 = (R0 * R1) % mod;
+            R1 = (R1 * R1) % mod;
+        } else {
+            R1 = (R0 * R1) % mod;
+            R0 = (R0 * R0) % mod;
+        }
+    }
+    return R0;
 }
 
 int main()
 {
+    // mpz_class base("5");
+    // mpz_class exponent("2");
+    // mpz_class mod("1212");
+
+    // mpz_class result = montgomeryLadder(base, exponent, mod);
+    // std::cout << "Result: " << result << std::endl;
+
+    // mpz_class a, b;
+
+    // std::cout << "Nhập số thứ nhất: ";
+    // std::cin >> a;
+    // std::cout << "Nhập số thứ hai: ";
+    // std::cin >> b;
+
+    // mpz_class result = doubleAndAddMultiplication(a, b);
+    // std::cout << a << " * " << b << " = " << result << std::endl;
 
     // mpz_class a = -14;
     // mpz_class b = 17;
@@ -60,14 +92,27 @@ int main()
     // doubleAndAddMultiplication(a, b, result);
     // std::cout << a << " * " << b << " = " << result << std::endl;
 
-    ECC::ellipticCurve temp("6");
+    ECC::ellipticCurve temp("2");
+    ECC::Point Result;
+    // ECC::Point _G;
+    // _G.setValue("5", "1");
+    // ECC::Point _P;
+    // _P.setValue("5", "1");
+
     //temp.printECC();
     // // std::cout << "\nAfter\n"; 
-  
-    temp._mulECC_ver2();
-    temp.printECC();
-
-    // temp._addECC_ver1();
+    temp.printPrivateKey();
+    Result = temp._mulECC_ver3();
+    //temp._mulECC_ver1();
+    //temp.printECC();
+    
+    //temp._addECC_ver1();
+    // Result = temp._addECC_ver2(_G, _P);
+    // Result = temp._addECC_ver2(_G, Result);
+    //std::cout << "M value: " << temp.printPrivateKey() << std::endl;
+    
+    std::cout << "X value: " << Result.getValueX() << std::endl;
+    std::cout << "Y value: " << Result.getValueY() << std::endl;
     // temp.printECC();
 
 

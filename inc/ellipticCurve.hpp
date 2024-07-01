@@ -34,6 +34,9 @@ namespace ECC
     public:
         /* Method */
         friend auto printECC(ellipticCurve Source) -> void;
+        auto getP(void) -> Point;
+        auto getG(void) -> Point;
+        auto getR(void) -> Point;
         auto printG(void) -> void; 
         auto printP(void) -> void;
         auto printM(void) -> void;
@@ -41,29 +44,102 @@ namespace ECC
         auto printPrivateKey(void) -> void;
         auto printECC(void) -> void;
         
+        auto _double(Point& P) -> Point;
+
         auto _addECC_ver1(void) -> void;
         auto _addECC_ver2(Point& _G, Point& _P) -> Point;
+        auto _addECC_ver3(Point& _G, Point& _P) -> Point;
 
         auto _mulECC_ver1(void) -> void;
         auto _mulECC_ver2(void) -> void;
+        auto _mulECC_ver3(void) -> Point;
 
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
         ellipticCurve(const std::string private_key);
         ~ellipticCurve() = default;
     };
+
+    auto ellipticCurve::_double(Point& _P) -> Point
+    {
+        mpz_class x_result;
+        mpz_class x_temp;
+        mpz_class y_result;
+
+        mpz_class _M;
+        Point _R;
+
+        mpz_class modInverse_Value;
+        // Calculator M value
+            Common::modInverse((2 * _P.getValueY()), this->p, modInverse_Value);
+            _M = Common::mod((_P.getValueX() * _P.getValueX()), this->p);
+            _M = Common::mod(_M * 3, this->p);
+            _M = Common::mod(_M + A, this->p);
+            _M = Common::mod(_M * modInverse_Value, this->p);
+            // this->M = ((((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) * (modInverse_Value)) % p;
+            
+            // Calculator X value
+            x_result = Common::mod(_M * _M, this->p);
+            x_temp = Common::mod(2 * _P.getValueX(), this->p);
+            x_result = Common::mod(x_result - x_temp, p);
+            // x_result = (((M * M) % p) - ((2*(this->G.getValueX())) % p)) % p;
+            
+            // Calculator Y value
+            y_result = Common::mod(_P.getValueX() - x_result, p);
+            y_result = Common::mod(y_result * _M, p);
+            y_result = Common::mod(y_result - _P.getValueY(), p);
+            // y_result = (((M *((this->G.getValueX() - x_result) % p)) % p) - G.getValueY()) % p;
+            
+            _R.setValue(x_result, y_result); 
+            return _R;       
+    }
+
+    auto ellipticCurve::getP(void) -> Point
+    {
+        return this->P;
+    }
+
+    auto ellipticCurve::getG(void) -> Point
+    {
+        return this->G;
+    }
+
+    auto ellipticCurve::getR(void) -> Point
+    {
+        return this->R;
+    }
+
+    auto ellipticCurve::_mulECC_ver3(void) -> Point
+    {
+        P = G;
+        while (private_key > 0)
+        {
+            //if (private_key % 2 == 1)
+            if (mpz_tstbit(private_key.get_mpz_t(), 0))
+            {
+                R = _addECC_ver2(P, R);
+                //P = R;
+                // private_key--;        
+            }
+            P = _double(P);
+            private_key >>= 1;
+        }
+        return R;
+        //R = _addECC_ver2(R, P);
+    }
+
     auto ellipticCurve::_mulECC_ver2(void) -> void
     {
-        while (private_key)
+        while (private_key > 0)
         {
             if (private_key % 2 == 1)
             {
-                R = _addECC_ver2(this->G, this->P);
-                // P = R;
+                R = _addECC_ver2(G, P);
+                //P = R;
                 // private_key--;        
             }
-            R = _addECC_ver2(R, P);
-            private_key /= 2;
+            P = _addECC_ver2(P, P);
+            private_key = private_key / 2;
         }
     }
 
@@ -71,10 +147,16 @@ namespace ECC
     {
         while (private_key)
         {
-            _addECC_ver1();
+            R = _addECC_ver2(G, P);
             P = R;
             private_key--;
         }
+    }
+
+    auto ellipticCurve::_addECC_ver3(Point& _G, Point& _P) -> Point
+    {
+        Point Result;
+        return Result;
     }
 
     auto ellipticCurve::_addECC_ver2(Point& _G, Point& _P) -> Point
