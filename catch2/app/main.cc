@@ -17,7 +17,8 @@ int main()
 
     ECC::ellipticCurve temp("11302873530277286977317330088775295887228613968519091334644437952622729383175");
     ECC::Point Result;
-    
+    mpz_class Temp;
+    Temp.set_str
     temp.printPrivateKey();
     Result = temp._mulECC_ver2();
 
