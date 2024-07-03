@@ -21,6 +21,8 @@ namespace ECC
         Common() = delete;
         Common(Common&) = delete;
         Common(Common&&) = delete;
+        auto operator=(const Common&) -> Common& = delete;
+        auto operator=(Common&&) -> Common& = delete;
         ~Common() = delete;
 
         static mpz_class mod(mpz_class a, mpz_class b);

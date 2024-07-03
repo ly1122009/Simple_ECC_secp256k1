@@ -54,38 +54,20 @@ namespace ECC
         return this->R;
     }
 
-    auto ellipticCurve::_mulECC_ver3(void) -> Point
+    auto ellipticCurve::_mulECC_ver2(void) -> Point
     {
         P = G;
         while (private_key > 0)
         {
-            //if (private_key % 2 == 1)
             if (mpz_tstbit(private_key.get_mpz_t(), 0))
             {
                 R = _addECC_ver2(P, R);
-                //P = R;
-                // private_key--;        
+
             }
             P = _double(P);
             private_key >>= 1;
         }
         return R;
-        //R = _addECC_ver2(R, P);
-    }
-
-    auto ellipticCurve::_mulECC_ver2(void) -> void
-    {
-        while (private_key > 0)
-        {
-            if (private_key % 2 == 1)
-            {
-                R = _addECC_ver2(G, P);
-                //P = R;
-                // private_key--;        
-            }
-            P = _addECC_ver2(P, P);
-            private_key = private_key / 2;
-        }
     }
 
     auto ellipticCurve::_mulECC_ver1(void) -> void
@@ -98,11 +80,7 @@ namespace ECC
         }
     }
 
-    auto ellipticCurve::_addECC_ver3(Point& _G, Point& _P) -> Point
-    {
-        Point Result;
-        return Result;
-    }
+
 
     auto ellipticCurve::_addECC_ver2(Point& _G, Point& _P) -> Point
     {
@@ -307,17 +285,17 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("17", 10);
+        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
 
-        x_temp.set_str("5", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("1", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("5", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("1", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 
@@ -334,17 +312,17 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("17", 10);
+        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
 
-        x_temp.set_str("5", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("1", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("5", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("1", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
         y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 

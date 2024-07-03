@@ -29,8 +29,10 @@ namespace ECC
         mpz_class M;
         mpz_class private_key;
         mpz_class public_key;
-        static constexpr uint8_t A = 2;
-        static constexpr uint8_t B = 2;
+        static constexpr uint8_t A = 0;
+        static constexpr uint8_t B = 7;
+        auto _double(Point& P) -> Point;
+
     public:
         /* Method */
         friend auto printECC(ellipticCurve Source) -> void;
@@ -43,16 +45,12 @@ namespace ECC
         auto printR(void) -> void;
         auto printPrivateKey(void) -> void;
         auto printECC(void) -> void;
-        
-        auto _double(Point& P) -> Point;
 
         auto _addECC_ver1(void) -> void;
         auto _addECC_ver2(Point& _G, Point& _P) -> Point;
-        auto _addECC_ver3(Point& _G, Point& _P) -> Point;
 
         auto _mulECC_ver1(void) -> void;
-        auto _mulECC_ver2(void) -> void;
-        auto _mulECC_ver3(void) -> Point;
+        auto _mulECC_ver2(void) -> Point;
 
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
