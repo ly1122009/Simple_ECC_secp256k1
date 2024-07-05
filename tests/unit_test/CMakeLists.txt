@@ -5,6 +5,6 @@ if(ENABLE_TESTING)
 
     add_executable(${TEST_MAIN} ${TEST_SOURCES})
     target_include_directories(${TEST_MAIN} PUBLIC ${TEST_INCLUDES})
-    target_link_libraries(${TEST_MAIN} PUBLIC ${LIBRARY_NAME} Catch2::Catch2)
+    target_link_libraries(${TEST_MAIN} PUBLIC ${LIBRARY_NAME} Catch2::Catch2 GMP::gmp GMP::gmpxx)
 endif(ENABLE_TESTING)
 
