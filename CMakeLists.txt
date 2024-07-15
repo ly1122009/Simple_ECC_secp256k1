@@ -18,8 +18,8 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
 option(ENABLE_TESTING "Enable Testing with catch2" ON)
 option(ENABLE_WARNINGS "Enable to add warnings to a target" ON)
 option(ENABLE_WARNINGS_AS_ERRORS "Enable to treat warning as errors" OFF)
-option(ENABLE_SANITIZER_ADDRESS "Enable Sanitizer address" OFF)
-option(ENABLE_SANITIZER_UNDEFINED "Enable Sanitizer Undefined" OFF)
+option(ENABLE_SANITIZER_ADDRESS "Enable Sanitizer address" ON)
+option(ENABLE_SANITIZER_UNDEFINED "Enable Sanitizer Undefined" ON)
 
 
 find_package(Catch2)

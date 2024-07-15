@@ -1,31 +1,27 @@
 #pragma once
+
 #include <iostream>
-#include "common.hpp"
-#include "point.hpp"
-#include "ellipticCurve.hpp"
-#include <gmpxx.h>
+#include <cstdint>
+
 
 namespace test
 {
+    namespace ECC
+    {
+        /* Test Point _mulECC_ver2(void) functions */
+        const std::string privateKey_bigNumber = 
+            "11302873530277286977317330088775295887228613968519091334644437952622729383175";
+        const std::string publicKey_bigNumber_X = 
+            "43762022694931184757492607356752180905518342017728551120282167112666275442351";
+        const std::string publicKey_bigNumber_Y = 
+            "114384988717018399469597034834957578408750274128921832447140766594105794755401";
     
-    /* Test Point _mulECC_ver2(void) functions */
-    const std::string privateKey_0 = "0";
-    const std::string privateKey_1 = "1";
-    const std::string privateKey_2 = "2";
-    const std::string privateKey_bigNumber = 
-        "11302873530277286977317330088775295887228613968519091334644437952622729383175";
-    // mpz_class Output_XValue_bigNumber = "43762022694931184757492607356752180905518342017728551120282167112666275442351";
-    // // Output_XValue_bigNumber.set_str("43762022694931184757492607356752180905518342017728551120282167112666275442351", 10);
     
-    // mpz_class Output_YValue_bigNumber = "114384988717018399469597034834957578408750274128921832447140766594105794755401";
-    // Output_YValue_bigNumber.set_str("114384988717018399469597034834957578408750274128921832447140766594105794755401", 10);
+    
+    
+    
+    } // namespace ECC
 
 } // namespace test
 
         
-        // "43762022694931184757492607356752180905518342017728551120282167112666275442351";
-    // mpz_class Output_YValue_bigNumber = 
-    //     "114384988717018399469597034834957578408750274128921832447140766594105794755401";
-    // Output_privateKey_bigNumber.setvalue("
-    //                     43762022694931184757492607356752180905518342017728551120282167112666275442351"
-    //                     ,"114384988717018399469597034834957578408750274128921832447140766594105794755401");

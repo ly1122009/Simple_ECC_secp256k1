@@ -9,6 +9,7 @@
  * 
  */
 #pragma once
+#include <iostream>
 #include <cstdint>
 #include <gmpxx.h>
 
@@ -20,6 +21,8 @@ namespace ECC
         /* data */
         mpz_class x;
         mpz_class y;
+
+        static constexpr std::uint8_t DecimalType = 10;
 
     public:
         /* Constructor and Destructor */
@@ -35,8 +38,8 @@ namespace ECC
         auto setValue(const std::string& x, const std::string& y) -> void;
         auto setValue(const mpz_class& x, const mpz_class& y) -> void;
 
-        auto getValueX(void) -> mpz_class;
-        auto getValueY(void) -> mpz_class;
+        auto getValueX(void) const -> mpz_class;
+        auto getValueY(void) const -> mpz_class;
         
         friend auto addValueX(const std::string& x, Point& other) -> Point;
         friend auto addValueX(const Point& source, Point& other) -> Point;

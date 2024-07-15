@@ -82,7 +82,7 @@ namespace ECC
 
 
 
-    auto ellipticCurve::_addECC_ver2(Point& _G, Point& _P) -> Point
+    auto ellipticCurve::_addECC_ver2(const Point& _G, const Point& _P) -> Point
     {
         mpz_class x_result;
         mpz_class x_temp;
@@ -285,50 +285,50 @@ namespace ECC
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
+        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", ellipticCurve::DecimalType);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", ellipticCurve::DecimalType);
         y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", ellipticCurve::DecimalType);
         y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("0", 10);
+        x_temp.set_str("0", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("0", 10); 
+        y_temp.set_str("0", ellipticCurve::DecimalType); 
         y_temp = Common::mod(y_temp, p);       
         this->R.setValue(x_temp, y_temp);
 
-        this->private_key.set_str(private_key, 10);
+        this->private_key.set_str(private_key, ellipticCurve::DecimalType);
     }
 
     ellipticCurve::ellipticCurve(/* args */)
     {
         mpz_class x_temp;
         mpz_class y_temp;
-        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", 10);
+        this->p.set_str("115792089237316195423570985008687907853269984665640564039457584007908834671663", ellipticCurve::DecimalType);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", ellipticCurve::DecimalType);
         y_temp = Common::mod(y_temp, p);
         this->G.setValue(x_temp, y_temp);
 
-        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", 10);
+        x_temp.set_str("55066263022277343669578718895168534326250603453777594175500187360389116729240", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", 10);
+        y_temp.set_str("32670510020758816978083085130507043184471273380659243275938904335757337482424", ellipticCurve::DecimalType);
         y_temp = Common::mod(y_temp, p);
         this->P.setValue(x_temp, y_temp); 
 
-        x_temp.set_str("0", 10);
+        x_temp.set_str("0", ellipticCurve::DecimalType);
         x_temp = Common::mod(x_temp, p);
-        y_temp.set_str("0", 10); 
+        y_temp.set_str("0", ellipticCurve::DecimalType); 
         y_temp = Common::mod(y_temp, p);       
         this->R.setValue(x_temp, y_temp);     
     }

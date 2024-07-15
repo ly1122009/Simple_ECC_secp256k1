@@ -12,7 +12,7 @@ namespace ECC
     auto moduloValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(y, 10);
+        temp.y.set_str(y, Point::DecimalType);
         return Point(other.x, other.y % temp.y);
     }
     
@@ -24,7 +24,7 @@ namespace ECC
     auto moduloValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(x, 10);
+        temp.x.set_str(x, Point::DecimalType);
         return Point(other.x % temp.x, other.y);        
     }
 
@@ -36,7 +36,7 @@ namespace ECC
     auto divValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(y, 10);
+        temp.y.set_str(y, Point::DecimalType);
         return Point(other.x, other.y / temp.y);
     }
 
@@ -48,7 +48,7 @@ namespace ECC
     auto divValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(x, 10);
+        temp.x.set_str(x, Point::DecimalType);
         return Point(other.x / temp.x, other.y);
     }
 
@@ -60,7 +60,7 @@ namespace ECC
     auto mulValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(y, 10);
+        temp.y.set_str(y, Point::DecimalType);
         return Point(other.x, other.y * temp.y);        
     }
 
@@ -72,7 +72,7 @@ namespace ECC
     auto mulValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(x, 10);
+        temp.x.set_str(x, Point::DecimalType);
         return Point(other.x * temp.x, other.y);
     }
 
@@ -84,7 +84,7 @@ namespace ECC
     auto subtractValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(y, 10);
+        temp.y.set_str(y, Point::DecimalType);
         return Point(other.x, other.y - temp.y);
     }
 
@@ -96,7 +96,7 @@ namespace ECC
     auto subtractValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(x, 10);
+        temp.x.set_str(x, Point::DecimalType);
         return Point(other.x - temp.x, other.y);
     }
 
@@ -108,7 +108,7 @@ namespace ECC
     auto addValueY(const std::string& y, Point& other) -> Point
     {
         Point temp;
-        temp.y.set_str(y, 10);
+        temp.y.set_str(y, Point::DecimalType);
         return Point(other.x, other.y + temp.y);        
     }
 
@@ -120,7 +120,7 @@ namespace ECC
     auto addValueX(const std::string& x, Point& other) -> Point
     {
         Point temp;
-        temp.x.set_str(x, 10);
+        temp.x.set_str(x, Point::DecimalType);
         return Point(temp.x + other.x, other.y);
     }
     auto Point::setValueY(const mpz_class& y) -> void
@@ -130,7 +130,7 @@ namespace ECC
 
     auto Point::setValueY(const std::string& y) -> void
     {
-        this->y.set_str(y, 10);
+        this->y.set_str(y, Point::DecimalType);
     }
 
     auto Point::setValueX(const mpz_class& x) -> void
@@ -140,7 +140,7 @@ namespace ECC
 
     auto Point::setValueX(const std::string& x) -> void
     {
-        this->x.set_str(x, 10);
+        this->x.set_str(x, Point::DecimalType);
     }
 
     auto Point::setValue(const mpz_class& x, const mpz_class& y) -> void
@@ -151,16 +151,16 @@ namespace ECC
 
     auto Point::setValue(const std::string& x, const std::string& y) -> void
     {
-        this->x.set_str(x, 10);
-        this->y.set_str(y, 10);
+        this->x.set_str(x, Point::DecimalType);
+        this->y.set_str(y, Point::DecimalType);
     }
 
-    auto Point::getValueX(void) -> mpz_class
+    auto Point::getValueX(void) const -> mpz_class
     {
         return this->x;
     }
 
-    auto Point::getValueY(void) -> mpz_class
+    auto Point::getValueY(void) const -> mpz_class
     {
         return this->y;
     }
