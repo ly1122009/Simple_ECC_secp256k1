@@ -10,12 +10,12 @@ namespace ECC
     ECC::Point testPoint;
     ECC::ellipticCurve testEllipticCurve(test::ECC::privateKey_bigNumber);
 
-    TEST_CASE("ECC::testEllipticCurve::_mulECC_ver2 -> Success")
+    TEST_CASE("ECC::testEllipticCurve::_mulECC -> Success")
     {
-        testPoint = testEllipticCurve._mulECC_ver2();
+        testPoint = testEllipticCurve._mulECC();
         mpz_class ValueX, ValueY;
-        ValueX.set_str(test::ECC::publicKey_bigNumber_X, 10);
-        ValueY.set_str(test::ECC::publicKey_bigNumber_Y, 10);
+        ValueX.set_str(test::ECC::publicKey_bigNumber_X, test::ECC::DecimalType);
+        ValueY.set_str(test::ECC::publicKey_bigNumber_Y, test::ECC::DecimalType);
         REQUIRE(testPoint.getValueX() == ValueX);
         REQUIRE(testPoint.getValueY() == ValueY);
     }

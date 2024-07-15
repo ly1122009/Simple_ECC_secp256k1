@@ -19,7 +19,7 @@ int main()
     ECC::Point Result;
     
     temp.printPrivateKey();
-    Result = temp._mulECC_ver2();
+    Result = temp._mulECC();
 
     
     std::cout << "X value: " << Result.getValueX() << std::endl;

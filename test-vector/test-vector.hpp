@@ -16,6 +16,7 @@ namespace test
         const std::string publicKey_bigNumber_Y = 
             "114384988717018399469597034834957578408750274128921832447140766594105794755401";
     
+        static constexpr std::uint8_t DecimalType = 10;
     
     
     

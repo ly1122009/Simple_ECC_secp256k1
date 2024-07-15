@@ -36,25 +36,41 @@ namespace ECC
         static constexpr std::uint8_t DecimalType = 10;
 
         auto _double(Point& P) -> Point;
-        
-        friend auto printECC(ellipticCurve Source) -> void;
-        auto getP(void) -> Point;
-        auto getG(void) -> Point;
-        auto getR(void) -> Point;
-        auto printG(void) -> void; 
-        auto printP(void) -> void;
-        auto printM(void) -> void;
-        auto printR(void) -> void;
-        auto printPrivateKey(void) -> void;
-        auto printECC(void) -> void;
+
     
     public:
         /* Method */
-        auto _addECC_ver1(void) -> void;
-        auto _addECC_ver2(const Point& _G, const Point& _P) -> Point;
+        friend auto printECC(ellipticCurve Source) -> void;
+        auto getP(void) const -> Point;
+        auto getG(void) const -> Point;
+        auto getR(void) const -> Point;
+        auto printG(void) const -> void; 
+        auto printP(void) const -> void;
+        auto printM(void) const -> void;
+        auto printR(void) const -> void;
+        auto printPrivateKey(void) const -> void;
+        auto printECC(void) const -> void;
 
+        /* Function used to test _addECC_ver2 */
+        auto _addECC_ver1(void) -> void;
+        /* Function used to test _mulECC_ver2 */
         auto _mulECC_ver1(void) -> void;
-        auto _mulECC_ver2(void) -> Point;
+
+        /**
+         * @brief This function used to add two point exists in ECC
+         * 
+         * @param[in] _G : base point  
+         * @param[in] _P : second point that exists in ECC
+         * @return Point : result Point after the operation
+         */
+        auto _addECC(const Point& _G, const Point& _P) -> Point;
+
+        /**
+         * @brief This function used to mul a base point with a number base on ECC multiplication rule
+         * 
+         * @return Point : A point after the operation
+         */
+        auto _mulECC(void) -> Point;
 
         /* Constructor & Destructor */
         ellipticCurve(/* args */);

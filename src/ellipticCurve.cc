@@ -39,29 +39,29 @@ namespace ECC
             return _R;       
     }
 
-    auto ellipticCurve::getP(void) -> Point
+    auto ellipticCurve::getP(void) const -> Point
     {
         return this->P;
     }
 
-    auto ellipticCurve::getG(void) -> Point
+    auto ellipticCurve::getG(void) const -> Point
     {
         return this->G;
     }
 
-    auto ellipticCurve::getR(void) -> Point
+    auto ellipticCurve::getR(void) const -> Point
     {
         return this->R;
     }
 
-    auto ellipticCurve::_mulECC_ver2(void) -> Point
+    auto ellipticCurve::_mulECC(void) -> Point
     {
         P = G;
         while (private_key > 0)
         {
             if (mpz_tstbit(private_key.get_mpz_t(), 0))
             {
-                R = _addECC_ver2(P, R);
+                R = _addECC(P, R);
 
             }
             P = _double(P);
@@ -74,7 +74,7 @@ namespace ECC
     {
         while (private_key)
         {
-            R = _addECC_ver2(G, P);
+            R = _addECC(G, P);
             P = R;
             private_key--;
         }
@@ -82,7 +82,7 @@ namespace ECC
 
 
 
-    auto ellipticCurve::_addECC_ver2(const Point& _G, const Point& _P) -> Point
+    auto ellipticCurve::_addECC(const Point& _G, const Point& _P) -> Point
     {
         mpz_class x_result;
         mpz_class x_temp;
@@ -244,7 +244,7 @@ namespace ECC
         
     }
 
-    auto ellipticCurve::printECC(void) -> void
+    auto ellipticCurve::printECC(void) const -> void
     {
         printG();
         printP();
@@ -253,29 +253,29 @@ namespace ECC
         printPrivateKey();
     }
 
-    auto ellipticCurve::printPrivateKey(void) -> void
+    auto ellipticCurve::printPrivateKey(void) const -> void
     {
         std::cout << "Private Key: " << this->private_key << std::endl;
     }
 
-    auto ellipticCurve::printG(void) -> void
+    auto ellipticCurve::printG(void) const -> void
     {
         std::cout << "X value of G point: " << G.getValueX() << std::endl; 
         std::cout << "Y value of G point: " << G.getValueY() << std::endl;
     }
 
-    auto ellipticCurve::printP(void) -> void
+    auto ellipticCurve::printP(void) const -> void
     {
         std::cout << "X value of P point: " << P.getValueX() << std::endl; 
         std::cout << "Y value of P point: " << P.getValueY() << std::endl;
     }
 
-    auto ellipticCurve::printM(void) -> void
+    auto ellipticCurve::printM(void) const -> void
     {
         std::cout << "M value: " << this->M << std::endl;
     }
 
-    auto ellipticCurve::printR(void) -> void
+    auto ellipticCurve::printR(void) const -> void
     {
         std::cout << "X value of R point: " << R.getValueX() << std::endl; 
         std::cout << "Y value of R point: " << R.getValueY() << std::endl;
@@ -333,7 +333,7 @@ namespace ECC
         this->R.setValue(x_temp, y_temp);     
     }
     
-    auto printECC(ellipticCurve Source) -> void
+    auto printECC(ellipticCurve Source)  -> void
     {
         std::cout << "Value X: " << Source.R.getValueX() << std::endl;
         std::cout << "Value Y: " << Source.R.getValueY() << std::endl;
