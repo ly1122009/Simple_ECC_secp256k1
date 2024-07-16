@@ -8,6 +8,8 @@ namespace test
 {
     namespace ECC
     {
+        static constexpr std::uint8_t DecimalType = 10;
+        
         /* Test Point _mulECC_ver2(void) functions */
         const std::string privateKey_bigNumber = 
             "11302873530277286977317330088775295887228613968519091334644437952622729383175";
@@ -16,7 +18,7 @@ namespace test
         const std::string publicKey_bigNumber_Y = 
             "114384988717018399469597034834957578408750274128921832447140766594105794755401";
     
-        static constexpr std::uint8_t DecimalType = 10;
+        
     
     
     

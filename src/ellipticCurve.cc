@@ -56,33 +56,38 @@ namespace ECC
 
     auto ellipticCurve::_mulECC(void) -> Point
     {
-        P = G;
-        while (private_key > 0)
+        Point P_temp = P;
+        Point G_temp = G;
+        mpz_class private_key_temp = private_key;
+
+        /* Double and add algorithm */
+        P_temp = G_temp;
+        while (private_key_temp > 0)
         {
-            if (mpz_tstbit(private_key.get_mpz_t(), 0))
+            if (mpz_tstbit(private_key_temp.get_mpz_t(), 0))
             {
-                R = _addECC(P, R);
+                R = _addECC(P_temp, R);
 
             }
-            P = _double(P);
-            private_key >>= 1;
+            P_temp = _double(P_temp);
+            private_key_temp >>= 1;
         }
         return R;
     }
 
-    auto ellipticCurve::_mulECC_ver1(void) -> void
-    {
-        while (private_key)
-        {
-            R = _addECC(G, P);
-            P = R;
-            private_key--;
-        }
-    }
+    // auto ellipticCurve::_mulECC_ver1(void) -> void
+    // {
+    //     while (private_key)
+    //     {
+    //         R = _addECC(G, P);
+    //         P = R;
+    //         private_key--;
+    //     }
+    // }
 
 
 
-    auto ellipticCurve::_addECC(const Point& _G, const Point& _P) -> Point
+    auto ellipticCurve::_addECC(const Point& _G, const Point& _P) const -> Point
     {
         mpz_class x_result;
         mpz_class x_temp;
@@ -163,86 +168,85 @@ namespace ECC
         }
         return _R;
     }
+    // auto ellipticCurve::_addECC_ver1(void) -> void
+    // {
+    //     mpz_class x_result;
+    //     mpz_class x_temp;
+    //     mpz_class y_result;
 
-    auto ellipticCurve::_addECC_ver1(void) -> void
-    {
-        mpz_class x_result;
-        mpz_class x_temp;
-        mpz_class y_result;
+    //     mpz_class modInverse_Value;
+        
+    //     // P = R;
+        
+    //     /* The two points overlap */
+    //     if (this->P.getValueX() == this->G.getValueX() 
+    //         && this->P.getValueY() == this->G.getValueY())
+    //     {
+    //         // Calculator M value
+    //         Common::modInverse((2 * this->G.getValueY()), this->p, modInverse_Value);
+    //         this->M = Common::mod((this->G.getValueX() * this->G.getValueX()), this->p);
+    //         this->M = Common::mod(M * 3, this->p);
+    //         this->M = Common::mod(M + A, this->p);
+    //         this->M = Common::mod(M * modInverse_Value, this->p);
+    //         // this->M = ((((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) * (modInverse_Value)) % p;
+            
+    //         // Calculator X value
+    //         x_result = Common::mod(this->M * this->M, this->p);
+    //         x_temp = Common::mod(2 * this->G.getValueX(), this->p);
+    //         x_result = Common::mod(x_result - x_temp, p);
+    //         // x_result = (((M * M) % p) - ((2*(this->G.getValueX())) % p)) % p;
+            
+    //         // Calculator Y value
+    //         y_result = Common::mod(this->G.getValueX() - x_result, p);
+    //         y_result = Common::mod(y_result * M, p);
+    //         y_result = Common::mod(y_result - G.getValueY(), p);
+    //         // y_result = (((M *((this->G.getValueX() - x_result) % p)) % p) - G.getValueY()) % p;
+            
+    //         R.setValue(x_result, y_result);
+    //     }
+    //     /* The two points are symmetrical about the horizontal axis */
+    //     else if (Common::mod(-(this->G.getValueY()), p) == P.getValueY()  
+    //              && this->P.getValueX() == this->G.getValueX())
 
-        mpz_class modInverse_Value;
-        
-        // P = R;
-        
-        /* The two points overlap */
-        if (this->P.getValueX() == this->G.getValueX() 
-            && this->P.getValueY() == this->G.getValueY())
-        {
-            // Calculator M value
-            Common::modInverse((2 * this->G.getValueY()), this->p, modInverse_Value);
-            this->M = Common::mod((this->G.getValueX() * this->G.getValueX()), this->p);
-            this->M = Common::mod(M * 3, this->p);
-            this->M = Common::mod(M + A, this->p);
-            this->M = Common::mod(M * modInverse_Value, this->p);
-            // this->M = ((((this->G.getValueX() * this->G.getValueX()) * 3 + A) % p) * (modInverse_Value)) % p;
-            
-            // Calculator X value
-            x_result = Common::mod(this->M * this->M, this->p);
-            x_temp = Common::mod(2 * this->G.getValueX(), this->p);
-            x_result = Common::mod(x_result - x_temp, p);
-            // x_result = (((M * M) % p) - ((2*(this->G.getValueX())) % p)) % p;
-            
-            // Calculator Y value
-            y_result = Common::mod(this->G.getValueX() - x_result, p);
-            y_result = Common::mod(y_result * M, p);
-            y_result = Common::mod(y_result - G.getValueY(), p);
-            // y_result = (((M *((this->G.getValueX() - x_result) % p)) % p) - G.getValueY()) % p;
-            
-            R.setValue(x_result, y_result);
-        }
-        /* The two points are symmetrical about the horizontal axis */
-        else if (Common::mod(-(this->G.getValueY()), p) == P.getValueY()  
-                 && this->P.getValueX() == this->G.getValueX())
+    //     // else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
+    //     //          && this->P.getValueX() == this->G.getValueX())
+    //     {
+    //         this->R.setValue("0", "0");
+    //     }
 
-        // else if ((this->P.getValueY()) + (this->G.getValueY()) == static_cast<mpz_class>("0")
-        //          && this->P.getValueX() == this->G.getValueX())
-        {
-            this->R.setValue("0", "0");
-        }
-
-        /* The P point is a O point */
-        else if (this->P.getValueX() == static_cast<mpz_class>("0") 
-                && this->P.getValueY() == static_cast<mpz_class>("0"))
-        {
-            this->R.setValue(this->G.getValueX(), this->G.getValueY());
-        }
+    //     /* The P point is a O point */
+    //     else if (this->P.getValueX() == static_cast<mpz_class>("0") 
+    //             && this->P.getValueY() == static_cast<mpz_class>("0"))
+    //     {
+    //         this->R.setValue(this->G.getValueX(), this->G.getValueY());
+    //     }
         
-        /* Two different points */
-        else
-        {
-            // Calculator M value
-            Common::modInverse((this->P.getValueX() - this->G.getValueX()), this->p, modInverse_Value);
-            M = Common::mod(this->P.getValueY() - this->G.getValueY(), p);
-            M = Common::mod(M * modInverse_Value, p);
-            // this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
-            //         * (modInverse_Value)) % this->p;           
+    //     /* Two different points */
+    //     else
+    //     {
+    //         // Calculator M value
+    //         Common::modInverse((this->P.getValueX() - this->G.getValueX()), this->p, modInverse_Value);
+    //         M = Common::mod(this->P.getValueY() - this->G.getValueY(), p);
+    //         M = Common::mod(M * modInverse_Value, p);
+    //         // this->M = (((this->P.getValueY() - this->G.getValueY()) % p) 
+    //         //         * (modInverse_Value)) % this->p;           
             
-            // Calculator X value
-            x_result = Common::mod(M * M, p);
-            x_result = Common::mod(x_result - G.getValueX(), p);
-            x_result = Common::mod(x_result - P.getValueX(), p);
-            // x_result = (((M * M) % p) - ((G.getValueX() + P.getValueX()) % p)) % p;
+    //         // Calculator X value
+    //         x_result = Common::mod(M * M, p);
+    //         x_result = Common::mod(x_result - G.getValueX(), p);
+    //         x_result = Common::mod(x_result - P.getValueX(), p);
+    //         // x_result = (((M * M) % p) - ((G.getValueX() + P.getValueX()) % p)) % p;
             
-            // Calculator Y value
-            y_result = Common::mod(G.getValueX() - x_result, p);
-            y_result = Common::mod(y_result * M, p);
-            y_result = Common::mod(y_result - G.getValueY(), p);
-            // y_result = (M*(G.getValueX() - x_result) - G.getValueY()) % p;
+    //         // Calculator Y value
+    //         y_result = Common::mod(G.getValueX() - x_result, p);
+    //         y_result = Common::mod(y_result * M, p);
+    //         y_result = Common::mod(y_result - G.getValueY(), p);
+    //         // y_result = (M*(G.getValueX() - x_result) - G.getValueY()) % p;
             
-            R.setValue(x_result, y_result);
-        }
+    //         R.setValue(x_result, y_result);
+    //     }
         
-    }
+    // }
 
     auto ellipticCurve::printECC(void) const -> void
     {
@@ -333,11 +337,11 @@ namespace ECC
         this->R.setValue(x_temp, y_temp);     
     }
     
-    auto printECC(ellipticCurve Source)  -> void
-    {
-        std::cout << "Value X: " << Source.R.getValueX() << std::endl;
-        std::cout << "Value Y: " << Source.R.getValueY() << std::endl;
-    }
+    // auto printECC(ellipticCurve Source)  -> void
+    // {
+    //     std::cout << "Value X: " << Source.R.getValueX() << std::endl;
+    //     std::cout << "Value Y: " << Source.R.getValueY() << std::endl;
+    // }
 
 } // namespace ECC
 
