@@ -27,6 +27,28 @@ int main()
     // std::cout << "\n\nAfter:\n\n";
     // temp.printECC();
 
+    ECC::ellipticCurve temp(2, 2, 
+    "5", //Gx
+    "1", //Gy
+    "17"); // p
+    ECC::Point Result;
+    
+    /* Mul with 2 times */
+    Result = temp._mulECC("2");
+    std::cout << "Result: \n";
+    std::cout << "X value: " << Result.getValueX() << std::endl;
+    std::cout << "Y value: " << Result.getValueY() << std::endl;
+
+    std::cout << "After: \n";
+
+    /* mul with 9 times */
+    Result = temp._mulECC("7");
+    std::cout << "Result: \n";
+    std::cout << "X value: " << Result.getValueX() << std::endl;
+    std::cout << "Y value: " << Result.getValueY() << std::endl;
+
+
+
     
     
 

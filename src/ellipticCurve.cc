@@ -75,6 +75,28 @@ namespace ECC
         return R;
     }
 
+    auto ellipticCurve::_mulECC(const std::string private_key) -> Point
+    {
+        this->private_key = private_key;
+
+        Point P_temp = P;
+        Point G_temp = G;
+        mpz_class private_key_temp = this->private_key;
+
+        /* Double and add algorithm */
+        P_temp = G_temp;
+        while (private_key_temp > 0)
+        {
+            if (mpz_tstbit(private_key_temp.get_mpz_t(), 0))
+            {
+                R = _addECC(P_temp, R);
+
+            }
+            P_temp = _double(P_temp);
+            private_key_temp >>= 1;
+        }
+        return R;
+    }
     // auto ellipticCurve::_mulECC_ver1(void) -> void
     // {
     //     while (private_key)
@@ -337,7 +359,9 @@ namespace ECC
         this->R.setValue(x_temp, y_temp);     
     }
 
-    ellipticCurve::ellipticCurve(const std::uint32_t A, const std::uint32_t B, const std::string G_x, const std::string G_y, const std::string p, const std::string private_key)
+    ellipticCurve::ellipticCurve(const std::uint32_t A, const std::uint32_t B, 
+                                const std::string G_x, const std::string G_y, 
+                                const std::string p)
     {
         this->A = A;
         this->B = B;
@@ -364,7 +388,6 @@ namespace ECC
         y_temp = Common::mod(y_temp, this->p);       
         this->R.setValue(x_temp, y_temp);
 
-        this->private_key.set_str(private_key, ellipticCurve::DecimalType);
     }
     
     // auto printECC(ellipticCurve Source)  -> void

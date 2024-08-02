@@ -56,7 +56,7 @@ namespace ECC
         ellipticCurve(const std::string private_key);
         ellipticCurve(const std::uint32_t A, const std::uint32_t B, 
                       const std::string G_x, const std::string G_y, 
-                      const std::string p, const std::string private_key);
+                      const std::string p);
         ~ellipticCurve() = default;
 
         /* Method */
@@ -108,6 +108,14 @@ namespace ECC
          * @return Point : A point after the operation
          */
         auto _mulECC(void) -> Point;
+
+        /**
+         * @brief This function used to mul a base point with a number base on ECC multiplication rule 
+         * 
+         * @param[in] private_key want to generate to a public key
+         * @return Point : A point after the operation
+         */
+        auto _mulECC(const std::string private_key) -> Point;
 
     };
 } // namespace ECC
