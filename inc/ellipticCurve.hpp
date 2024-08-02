@@ -1,7 +1,7 @@
 /**
  * @file EllipticCurve.hpp
  * @author Lynguyen
- * @brief File store EllipticCurve class
+ * @brief File store EllipticCurve class (using secp256k1)
  * @version 0.1
  * @date 2024-06-24
  * 
@@ -25,13 +25,13 @@ namespace ECC
         Point R;
         /* Base Point */
         Point G;
-        mpz_class p;
+        mpz_class p; // limits number
         mpz_class M;
         mpz_class private_key;
         mpz_class public_key;
         /* Secp256k1 */
-        static constexpr uint8_t A = 0;
-        static constexpr uint8_t B = 7;
+        uint8_t A = 0;
+        uint8_t B = 7;
         /* Decimal */
         static constexpr std::uint8_t DecimalType = 10;
 
@@ -54,6 +54,9 @@ namespace ECC
         /* Constructor & Destructor */
         ellipticCurve(/* args */);
         ellipticCurve(const std::string private_key);
+        ellipticCurve(const std::uint32_t A, const std::uint32_t B, 
+                      const std::string G_x, const std::string G_y, 
+                      const std::string p, const std::string private_key);
         ~ellipticCurve() = default;
 
         /* Method */

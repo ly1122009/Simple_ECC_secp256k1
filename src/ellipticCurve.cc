@@ -336,6 +336,36 @@ namespace ECC
         y_temp = Common::mod(y_temp, p);       
         this->R.setValue(x_temp, y_temp);     
     }
+
+    ellipticCurve::ellipticCurve(const std::uint32_t A, const std::uint32_t B, const std::string G_x, const std::string G_y, const std::string p, const std::string private_key)
+    {
+        this->A = A;
+        this->B = B;
+        
+        mpz_class x_temp;
+        mpz_class y_temp;
+        this->p.set_str(p, ellipticCurve::DecimalType);
+
+        x_temp.set_str(G_x, ellipticCurve::DecimalType);
+        x_temp = Common::mod(x_temp, this->p);
+        y_temp.set_str(G_y, ellipticCurve::DecimalType);
+        y_temp = Common::mod(y_temp, this->p);
+        this->G.setValue(x_temp, y_temp);
+
+        x_temp.set_str(G_x, ellipticCurve::DecimalType);
+        x_temp = Common::mod(x_temp, this->p);
+        y_temp.set_str(G_y, ellipticCurve::DecimalType);
+        y_temp = Common::mod(y_temp, this->p);
+        this->P.setValue(x_temp, y_temp); 
+
+        x_temp.set_str("0", ellipticCurve::DecimalType);
+        x_temp = Common::mod(x_temp, this->p);
+        y_temp.set_str("0", ellipticCurve::DecimalType); 
+        y_temp = Common::mod(y_temp, this->p);       
+        this->R.setValue(x_temp, y_temp);
+
+        this->private_key.set_str(private_key, ellipticCurve::DecimalType);
+    }
     
     // auto printECC(ellipticCurve Source)  -> void
     // {
